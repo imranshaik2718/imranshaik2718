@@ -1,33 +1,57 @@
-import './App.css';
+import React, { useState, useRef } from "react";
+import "./App.css";
+import Navbar from "./componets/Navbar";
+import Form from "./componets/form";
+import ShowTask from "./componets/ShowTask";
+
+
 function App() {
+  const [text, setText] = useState("");
+  const [tasks, setTasks] = useState([]);
+
+  const [allArea, newArea] = useState({
+    color: "black",
+    backgroundColor: "white",
+  });
+
+  const bodyRef = useRef(null); 
+
+  const chnageBtn  = (cls) => {
+
+    const elements = document.querySelectorAll('.app-theme-target');
+  const bgClasses = ['bg-primary', 'bg-danger', 'bg-success', 'bg-warning', 'bg-secondary'];
+
+  elements.forEach(el => {
+    el.classList.remove(...bgClasses);
+    el.classList.add(`bg-${cls}`);
+  });
+debugger
+    if(cls== null ){
+      if (allArea.color === "black") {
+        newArea({
+          color: "white",
+          backgroundColor: "black",
+        });
+      } else {
+        newArea({
+          color: "black",
+          backgroundColor: "white",
+        });
+      }
+    }
+  };
+
+
   return (
     <>
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
-  <div className="container-fluid">
-    <a className="navbar-brand" href="/">Utilities</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/">Link</a>
-        </li>
-      
-      </ul>
-      <form className="d-flex" role="search">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-    
-    
-    
+      <div className="body h-screen app-theme-target" ref={bodyRef} style={allArea}>
+        <Navbar title="Taskmate" chnageBtn={chnageBtn} allArea={allArea} />
+        <div className="container py-5">
+          <Form heading="Enter the Task"  text={text} setText={setText} setTasks={setTasks} tasks={tasks} />
+          <ShowTask  tasks={tasks}  setTasks={setTasks}/>
+        </div>
+        
+      </div>
     </>
   );
 }
